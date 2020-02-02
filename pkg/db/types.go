@@ -4,7 +4,7 @@ package db
 type Encoder struct {
 	IP     string    `json:"ip"`
 	Config *Config   `json:"config,omitempty"`
-	Stream *[]Stream `json:"event,omitempty"`
+	Stream *[]Stream `json:"stream,omitempty"`
 }
 
 //Config struct holds authentication needed for encoding

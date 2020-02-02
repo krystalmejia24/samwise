@@ -14,7 +14,7 @@ type Repo struct {
 // NewRepo initializes and returns the redis client
 func NewRepo() *Repo {
 	c := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
+		Addr: "redis-server:6379",
 	})
 
 	return &Repo{client: c}
