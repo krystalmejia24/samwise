@@ -1,19 +1,19 @@
 package samwise
 
 import (
-	"github.com/krystalmejia24/samwise/pkg/db"
+	"github.com/krystalmejia24/samwise/db"
 
-	log "github.com/sirupsen/logrus"
+	log "github.com/rs/zerolog"
 )
 
 // Service is the implemenation of Samwise svc
 type Service struct {
-	DB     *db.Repo
-	Logger *log.Logger
+	DBConn db.Svc
+	Logger log.Logger
 }
 
 // NewSvc creates and returns a samwise service
-func NewSvc(db *db.Repo, logger *log.Logger) *Service {
+func NewSvc(db db.Svc, logger log.Logger) *Service {
 	return &Service{
 		db,
 		logger,

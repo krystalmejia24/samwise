@@ -21,6 +21,11 @@ func defaultEncoder() *Encoder {
 	}
 }
 
+func defaultRepo() *Redis {
+	//add mock https://github.com/elliotchance/redismock
+	return NewRedis("localhost:6379")
+}
+
 func TestRedis_CreateEncoder(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -35,8 +40,7 @@ func TestRedis_CreateEncoder(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRepo()
-			if err := r.CreateEncoder(tt.e); (err != nil) != tt.wantErr {
+			if err := CreateEncoder(tt.e, defaultRepo()); (err != nil) != tt.wantErr {
 				t.Errorf("Redis.CreateEncoder() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -71,8 +75,7 @@ func TestRedis_GetEncoder(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRepo()
-			got, err := r.GetEncoder(tt.ip)
+			got, err := GetEncoder(tt.ip, defaultRepo())
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Redis.GetEncoder() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -106,8 +109,7 @@ func TestRepo_DeleteEncoder(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRepo()
-			got, err := r.DeleteEncoder(tt.ip)
+			got, err := DeleteEncoder(tt.ip, defaultRepo())
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Repo.DeleteEncoder() error = %v, wantErr %v", err, tt.wantErr)
 				return

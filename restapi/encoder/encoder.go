@@ -7,8 +7,8 @@ import (
 
 	"github.com/go-redis/redis"
 
-	"github.com/krystalmejia24/samwise/pkg/db"
-	"github.com/krystalmejia24/samwise/pkg/samwise"
+	"github.com/krystalmejia24/samwise"
+	"github.com/krystalmejia24/samwise/db"
 )
 
 // Handler handles requests around encoders
@@ -39,7 +39,7 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) getEncoder(w http.ResponseWriter, r *http.Request) {
 	key := path.Base(r.URL.Path)
 
-	encoder, err := h.svc.DB.GetEncoder(key)
+	encoder, err := db.GetEncoder(key, h.svc.DBConn)
 	if err == redis.Nil {
 		formatResponse(w, http.StatusNotFound, "No items with key "+key)
 		return
@@ -61,7 +61,7 @@ func (h *Handler) postEncoder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.svc.DB.CreateEncoder(&e)
+	err = db.CreateEncoder(&e, h.svc.DBConn)
 	if err != nil {
 		formatResponse(w, http.StatusInternalServerError, err.Error())
 		return
@@ -73,7 +73,7 @@ func (h *Handler) postEncoder(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) deleteEncoder(w http.ResponseWriter, r *http.Request) {
 	key := path.Base(r.URL.Path)
 
-	val, err := h.svc.DB.DeleteEncoder(key)
+	val, err := db.DeleteEncoder(key, h.svc.DBConn)
 	if err != nil {
 		formatResponse(w, http.StatusInternalServerError, err.Error())
 		return
