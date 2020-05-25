@@ -6,8 +6,17 @@ withColors = sed ''/PASS/s//$$(printf "\033[32mPASS\033[0m")/'' | sed ''/FAIL/s/
 run:
 	go run $(cmd)
 
+run_docker:
+	docker-compose up
+
+build_docker:
+	docker-compose build
+
 build:
 	go build $(cmd)
+
+bench:
+	go test -bench=. ./...
 
 test:
 	go test -v -race ./... | $(withColors)
