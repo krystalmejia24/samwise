@@ -9,11 +9,13 @@ import (
 
 	"github.com/krystalmejia24/samwise"
 	"github.com/krystalmejia24/samwise/db"
+	"github.com/krystalmejia24/samwise/encoder"
 )
 
 // Handler handles requests around encoders
 type Handler struct {
-	svc *samwise.Service
+	svc     *samwise.Service
+	encoder encoder.Service
 }
 
 // New creates and returns a new Handler instance

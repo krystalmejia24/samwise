@@ -10,7 +10,7 @@
 |-------------------------|:-------------------:|--------------------------|
 | `SAMWISE_ENV`           | `local`             | environment              |
 | `SAMWISE_HTTP_PORT`     | `80808`             | http server listen port  |
-| `SAMWISE_TIMEOUT`       | `5s`                 | http server timeout      |
+| `SAMWISE_TIMEOUT`       | `5s`                | http server timeout      |
 | `SAMWISE_DB_CONNECTION` | `redis-server:6379` | Redis connection string. Uses Docker default image by default |
 
 ## Quick Start

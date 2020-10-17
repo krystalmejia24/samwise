@@ -18,16 +18,16 @@ func NewID3(owner string, payload string) *ID3 {
 	}
 }
 
-func (i *ID3) CreateTag(owner string, payload string) string {
+func (i *ID3) CreateTag(owner string, payload string) []byte {
 	id3 := append(getHeader(), getPrivFrame([]byte(owner), []byte(payload))...)
 
-	return string(id3)
+	return id3
 }
 
-func (i *ID3) GetTag() string {
+func (i *ID3) GetTag() []byte {
 	id3 := append(getHeader(), getPrivFrame(i.OwnerID, i.Payload)...)
 
-	return string(id3)
+	return id3
 }
 
 func getHeader() []byte {
