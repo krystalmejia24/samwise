@@ -11,7 +11,7 @@ func defaultEncoder() *Encoder {
 	return &Encoder{
 		IP: "10.10.10.10",
 		Config: &Config{
-			Username: "username",
+			User: "User",
 			APIKey:   "api-key",
 		},
 		Stream: &[]Stream{

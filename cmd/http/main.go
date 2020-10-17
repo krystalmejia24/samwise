@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"time"
 
@@ -10,8 +10,6 @@ import (
 	"github.com/krystalmejia24/samwise/db"
 	"github.com/krystalmejia24/samwise/restapi"
 	"github.com/rs/zerolog"
-
-	log "github.com/sirupsen/logrus"
 )
 
 //Config holds values for configuring a samwise server
@@ -21,6 +19,7 @@ type Config struct {
 	LogLevel string        `envconfig:"LOG_LEVEL" default:"debug"`
 	DBConn   string        `envconfig:"DB_CONNECTION" default:"redis-server:6379"`
 	Timeout  time.Duration `envconfig:"TIMEOUT" default:"5s"`
+	Logger   zerolog.Logger
 }
 
 func main() {
@@ -30,11 +29,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(cfg)
-
-	//init logger from zerolog
-	logger := getLogger(cfg.LogLevel)
-
 	//init redis db
 	db := db.NewRedis(cfg.DBConn)
 
@@ -42,14 +36,16 @@ func main() {
 	apiCfg := restapi.Config{
 		Port:    cfg.Port,
 		Timeout: cfg.Timeout,
-		Svc:     *samwise.NewSvc(db, logger),
+		Svc:     *samwise.NewSvc(db, cfg.Logger),
 	}
 
 	//start server
 	server := restapi.NewServer(apiCfg)
 
-	logger.Info().Str("port", cfg.Port).Msg("Starting Samwise")
-	log.Fatal(server.ListenAndServe())
+	cfg.Logger.Info().Str("port", cfg.Port).Msg("Starting Samwise")
+	if err := server.ListenAndServe(); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func loadConfig() (Config, error) {
@@ -58,6 +54,8 @@ func loadConfig() (Config, error) {
 	if err != nil {
 		return c, err
 	}
+
+	c.Logger = getLogger(c.LogLevel)
 
 	return c, nil
 }

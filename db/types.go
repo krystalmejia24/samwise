@@ -9,7 +9,7 @@ type Encoder struct {
 
 //Config struct holds authentication needed for encoding
 type Config struct {
-	Username string `json:"username,omitempty"`
+	User string `json:"User,omitempty"`
 	APIKey   string `json:"api_key,omitempty"`
 }
 
